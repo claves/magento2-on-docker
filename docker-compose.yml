@@ -1,5 +1,19 @@
 version: "3"
 services:
+  web:
+    build: ./
+    image: magento2-web
+    ports:
+      - "80:80"
+    links:
+      - db
+    volumes:
+      - magento-sync:/var/www/html:nocopy
+    depends_on:
+      - db
+    networks:
+      - magento-network
+
   db:
     image: mysql:5.7
     ports:
@@ -9,19 +23,37 @@ services:
       MYSQL_DATABASE: magento
     volumes:
       - db-data:/var/lib/mysql
-      - ./docker-logs/mysql:/var/log/mysql
+    networks:
+      - magento-network
 
-  web:
-    build: ./
-    image: magento2-web
+  redis:
+    image: redis
     ports:
-      - "80:80"
-    links:
-      - db
-    volumes:
-      - ./:/var/www/html:cached
-      - ./docker-logs/apache2:/var/log/apache2
-    depends_on:
-      - db
+     - 6379
+    networks:
+      - magento-network
+
+  redis-session:
+    image: redis
+    ports:
+     - 6379
+    networks:
+      - magento-network
+
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - 1025:1025
+      - 8025:8025
+    networks:
+      - magento-network
+
 volumes:
+  magento-sync:
+    external: true
   db-data:
+    driver: local
+
+networks:
+  magento-network:
+    driver: bridge
