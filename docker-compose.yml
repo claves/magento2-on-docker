@@ -5,6 +5,7 @@ services:
     image: magento2-web
     ports:
       - "32770:80"
+      - "32771:22"
     links:
       - db
     volumes:

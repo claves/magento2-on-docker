@@ -3,16 +3,24 @@ FROM php:7.1-apache
 RUN apt-get update \
   && apt-get install -y \
     apt-utils \
+    cron \
+    curl \
+    git \
+    gzip \
     libfreetype6-dev \
     libicu-dev \
-    libxml2-dev \
-    libxslt1-dev \
     libjpeg62-turbo-dev \
     libmcrypt-dev \
     libpng-dev \
+    libxml2-dev \
+    libxslt1-dev \
     mysql-client \
+    openssh-server \
+    rsync \
+    sudo \
     vim \
     wget \
+    zip \
   && docker-php-ext-configure \
     gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
   && docker-php-ext-install \
@@ -45,3 +53,7 @@ RUN apt-get update \
   && usermod -aG magento www-data
 ENV WEBROOT_PATH /var/www/html
 RUN passwd magento -d
+# SSH config
+COPY ./conf/sshd_config /etc/ssh/sshd_config
+RUN chown magento:magento /etc/ssh/ssh_config
+EXPOSE 22
