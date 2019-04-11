@@ -10,7 +10,6 @@ RUN apt-get update \
     libjpeg62-turbo-dev \
     libmcrypt-dev \
     libpng-dev \
-    libxslt1-dev \
     mysql-client \
     vim \
     wget \
@@ -24,6 +23,7 @@ RUN apt-get update \
     mcrypt \
     bcmath \
     pdo_mysql \
+    opcache \
     xsl \
     zip \
     soap \
