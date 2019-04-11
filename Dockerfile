@@ -39,7 +39,7 @@ RUN apt-get update \
   && chmod 666 /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
   && useradd -m -d /home/magento -s /bin/bash magento && adduser magento sudo \
   && echo "magento ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers \
-  && touch /etc/sudoers.d/privacy \
+  && mkdir -p /etc/sudoers.d && touch /etc/sudoers.d/privacy \
   && echo "Defaults        lecture = never" >> /etc/sudoers.d/privacy \
   && usermod -aG www-data magento \
   && usermod -aG magento www-data
