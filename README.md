@@ -10,6 +10,13 @@
     src: '/Magento/source/path' # Magentoソースディレクトリに変更
 ```
 
+- ポート番号は必要な場合は適宜修正 ホスト:コンテナの形式
+```
+    ports:
+      - "32770:80"
+```
+
+
 ## 使い方
 - Docker-syncを起動 `docker-sync start`
 - Docker-composeを起動 `docker-compose up -d`
@@ -20,3 +27,25 @@
 | Database Server Username | `root` |
 | Database Server Password | なし |
 | Database Name | `magento` |
+
+- コンテナに入る
+```
+# docker-compose exec -u ユーザー コンテナ名 bash
+docker-compose exec -u magento web bash
+```
+
+### Magento インストール
+
+- ホスト名、ポート番号、管理者ログイン情報は適宜修正
+
+```
+php bin/magento setup:install --base-url=http://magento2.test:32770/ --db-host=db --db-name=magento --db-user=root --admin-firstname=Magento --admin-lastname=User --admin-email=user@example.com --admin-user=admin --admin-password=admin123 --language=ja_JP --currency=JPY --timezone=Asia/Tokyo --use-rewrites=1 --backend-frontname=admin
+```
+
+### セッションとキャッシュにredisを使用するよう設定
+
+```
+php bin/magento setup:config:set --session-save=redis --session-save-redis-host=redis-session --session-save-redis-log-level=3 --session-save-redis-db=0
+php bin/magento setup:config:set --cache-backend=redis --cache-backend-redis-server=redis --cache-backend-redis-db=0
+php bin/magento setup:config:set --page-cache=redis --page-cache-redis-server=redis --page-cache-redis-db=1
+```
