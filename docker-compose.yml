@@ -10,6 +10,7 @@ services:
       - db
     volumes:
       - magento-sync:/var/www/html:nocopy
+      - "~/.ssh:/home/magento/.ssh"
     depends_on:
       - db
     networks:

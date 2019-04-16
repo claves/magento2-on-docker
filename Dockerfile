@@ -45,6 +45,9 @@ RUN apt-get update \
   && echo "xdebug.idekey=PHPSTORM" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
   && echo "xdebug.max_nesting_level=1000" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
   && chmod 666 /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+  && cp /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini \
+  && sed -ri 's/^(memory_limit = )[0-9]+(M|G)$/memory_limit = 2G/' /usr/local/etc/php/php.ini \
+  && mkdir -p /var/run/sshd \
   && useradd -m -d /home/magento -s /bin/bash magento && adduser magento sudo \
   && echo "magento ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers \
   && mkdir -p /etc/sudoers.d && touch /etc/sudoers.d/privacy \
