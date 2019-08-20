@@ -10,7 +10,7 @@ RUN apt-get update \
     libjpeg62-turbo-dev \
     libmcrypt-dev \
     libpng-dev \
-    mysql-client \
+    default-mysql-client \
     vim \
     wget \
     git \
