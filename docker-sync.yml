@@ -21,8 +21,10 @@ syncs:
     'var/view_preprocessed',
     'var/session',
     'var/tmp',
+    'var/log',
+    'var/report',
     'node_modules',
-    'generated/*',
+    #'generated/*',
     #'vendor/*',
     'pub/static/*',
     'pub/media/*'
@@ -41,7 +43,7 @@ syncs:
     'var/session',
     'var/tmp',
     'node_modules',
-    'generated/*', 
+    #'generated/*',
     #'vendor/*',
     'pub/static/*',
     'pub/media/*'

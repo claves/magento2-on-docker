@@ -13,11 +13,6 @@ services:
       - db
     networks:
       - magento-network
-    deploy:
-      resources:
-        limits:
-          cpus: '0.8'
-          memory: 512M
 
   db:
     image: mysql:5.7
@@ -30,11 +25,6 @@ services:
       - db-data:/var/lib/mysql
     networks:
       - magento-network
-    deploy:
-      resources:
-        limits:
-          cpus: '0.25'
-          memory: 1G
 
   redis:
     image: redis
@@ -42,11 +32,6 @@ services:
       - 6379
     networks:
       - magento-network
-    deploy:
-      resources:
-        limits:
-          cpus: '0.10'
-          memory: 128M
 
   redis-session:
     image: redis
@@ -54,11 +39,6 @@ services:
       - 6379
     networks:
       - magento-network
-    deploy:
-      resources:
-        limits:
-          cpus: '0.10'
-          memory: 128M
 
   mailhog:
     image: mailhog/mailhog
@@ -67,11 +47,6 @@ services:
       - 8025:8025
     networks:
       - magento-network
-    deploy:
-      resources:
-        limits:
-          cpus: '0.10'
-          memory: 128M
 
 volumes:
   magento-sync:
