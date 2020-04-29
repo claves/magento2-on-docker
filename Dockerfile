@@ -30,6 +30,7 @@ RUN apt-get update \
     xsl \
     zip \
     soap \
+  && mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini" \
   && a2enmod rewrite \
   && curl -sL https://deb.nodesource.com/setup_10.x | bash - \
   && apt-get install -y nodejs \
