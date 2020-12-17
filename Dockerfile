@@ -10,11 +10,12 @@ RUN apt-get update \
     libjpeg62-turbo-dev \
     libmcrypt-dev \
     libpng-dev \
-    mysql-client \
+    default-mysql-client \
     vim \
     wget \
     sudo \
     zsh \
+    git \
     tree \
   && docker-php-ext-configure \
     gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
@@ -33,8 +34,8 @@ RUN apt-get update \
   && a2enmod rewrite \
   && curl -sL https://deb.nodesource.com/setup_10.x | bash - \
   && apt-get install -y nodejs \
-  && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
-  && pecl install xdebug && docker-php-ext-enable xdebug \
+  && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --version=1.10.19 \
+  && pecl install xdebug-2.9.8 && docker-php-ext-enable xdebug \
   && echo "xdebug.remote_enable=1"                  >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
   && echo "xdebug.remote_port=9001"                 >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
   && echo "xdebug.remote_connect_back=0"            >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
