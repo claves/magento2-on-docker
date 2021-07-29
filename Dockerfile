@@ -30,7 +30,7 @@ RUN apt-get update \
     soap \
   && a2enmod rewrite \
   && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --1 \
-  && pecl install xdebug && docker-php-ext-enable xdebug \
+  && pecl install xdebug-2.9.8 && docker-php-ext-enable xdebug \
   && echo "xdebug.remote_enable=1" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
   && echo "xdebug.remote_port=9000" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
   && echo "xdebug.remote_connect_back=0" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
