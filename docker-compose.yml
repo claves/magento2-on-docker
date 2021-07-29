@@ -16,6 +16,7 @@ services:
 
   db:
     image: mysql:5.7
+    platform: linux/amd64
     ports:
       - "32769:3306"
     environment:
