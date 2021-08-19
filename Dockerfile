@@ -11,6 +11,7 @@ RUN apt-get update \
     libmcrypt-dev \
     libpng-dev \
     libmagickwand-dev \
+    phantomjs \
     default-mysql-client \
     vim \
     wget \
