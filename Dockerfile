@@ -12,6 +12,7 @@ RUN apt-get update \
     libpng-dev \
     libmagickwand-dev \
     phantomjs \
+    zsh \
     default-mysql-client \
     vim \
     wget \
