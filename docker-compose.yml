@@ -4,7 +4,7 @@ services:
     build: ./
     image: magento2-web
     ports:
-      - "32770:80"
+      - "8888:80"
     links:
       - db
     volumes:
@@ -15,7 +15,7 @@ services:
       - magento-network
 
   db:
-    image: mysql:5.7
+    image: mysql:8.0
     platform: linux/amd64
     ports:
       - "32769:3306"
@@ -48,6 +48,16 @@ services:
       - 8025:8025
     networks:
       - magento-network
+
+  elasticsearch:
+        image: elasticsearch:7.9.0
+        ports:
+            - "9200:9200"
+            - "9300:9300"
+        environment:
+            discovery.type: single-node
+        networks:
+            - magento-network
 
 volumes:
   magento-sync:
