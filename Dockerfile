@@ -1,4 +1,4 @@
-FROM php:7.1-apache
+FROM php:7.4-apache
 
 RUN apt-get update \
   && apt-get install -y \
@@ -8,34 +8,34 @@ RUN apt-get update \
     libxml2-dev \
     libxslt1-dev \
     libjpeg62-turbo-dev \
-    libmcrypt-dev \
+    libzip-dev \
+    libonig-dev \
     libpng-dev \
     libmagickwand-dev \
-    phantomjs \
-    zsh \
     default-mysql-client \
     vim \
     wget \
     git \
     nodejs \
     npm \
+    unzip \
   && docker-php-ext-configure \
-    gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
+    gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/ \
   && docker-php-ext-install \
     dom \
     gd \
     intl \
-    mbstring \
-    mcrypt \
     bcmath \
     pdo_mysql \
     opcache \
     xsl \
     zip \
     soap \
+    sockets \
   && a2enmod rewrite \
-  && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --1 \
-  && pecl install xdebug-2.9.8 && docker-php-ext-enable xdebug \
+  && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
+  && curl https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2 \
+  && pecl install xdebug && docker-php-ext-enable xdebug \
   && pecl install imagick && docker-php-ext-enable imagick \
   && echo "xdebug.remote_enable=1" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
   && echo "xdebug.remote_port=9000" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
@@ -43,7 +43,6 @@ RUN apt-get update \
   && echo "xdebug.remote_host=host.docker.internal" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
   && echo "xdebug.idekey=PHPSTORM" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
   && echo "xdebug.max_nesting_level=1000" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
-  && echo "xdebug.remote_autostart=1" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
   && chmod 666 /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
   && cp /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini \
   && sed -ri 's/^(memory_limit = )[0-9]+(M|G)$/memory_limit = 2G/' /usr/local/etc/php/php.ini \
