@@ -34,7 +34,6 @@ RUN apt-get update \
     sockets \
   && a2enmod rewrite \
   && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
-  && curl https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2 \
   && pecl install xdebug && docker-php-ext-enable xdebug \
   && pecl install imagick && docker-php-ext-enable imagick \
   && echo "xdebug.remote_enable=1" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
