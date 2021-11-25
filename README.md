@@ -1,9 +1,9 @@
-# 意識低めのMagento2 on Docker
+# 意識低めのMagento2 on Docker v2.4
 できるだけ手軽にMagento2の開発環境を構築する実験
 
 ## 動作環境
 
-- [Docker](https://docs.docker.com/docker-for-mac/install/), [Docker-compose](https://docs.docker.com/compose/install/#install-compose) and [Docker-sync](https://github.com/EugenMayer/docker-sync/wiki/docker-sync-on-OSX)
+- [Docker](https://docs.docker.com/docker-for-mac/install/), [Docker-compose](https://docs.docker.com/compose/install/#install-compose) and [Docker-sync](https://docker-sync.readthedocs.io/en/latest/)
 - Magento ./src に展開するか `docker-sync.yml` を編集
 
 ```
@@ -39,7 +39,7 @@ docker-compose exec -u magento web bash
 - ホスト名、ポート番号、管理者ログイン情報は適宜修正
 
 ```
-php bin/magento setup:install --base-url=http://magento2.test:32770/ --db-host=db --db-name=magento --db-user=root --admin-firstname=Magento --admin-lastname=User --admin-email=user@example.com --admin-user=admin --admin-password=admin123 --language=ja_JP --currency=JPY --timezone=Asia/Tokyo --use-rewrites=1 --backend-frontname=admin
+php bin/magento setup:install --base-url=http://magento2.test:32770/ --db-host=db --db-name=magento --db-user=root --admin-firstname=Magento --admin-lastname=User --admin-email=user@example.com --admin-user=admin --admin-password=admin123 --language=ja_JP --currency=JPY --timezone=Asia/Tokyo --use-rewrites=1 --backend-frontname=admin --elasticsearch-host=elasticsearch --elasticsearch-port=9200
 ```
 
 ### セッションとキャッシュにredisを使用するよう設定

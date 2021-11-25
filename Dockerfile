@@ -34,7 +34,6 @@ RUN apt-get update \
     sockets \
   && a2enmod rewrite \
   && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
-  && curl https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2 \
   && pecl install xdebug && docker-php-ext-enable xdebug \
   && pecl install imagick && docker-php-ext-enable imagick \
   && echo "xdebug.remote_enable=1" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
@@ -43,6 +42,7 @@ RUN apt-get update \
   && echo "xdebug.remote_host=host.docker.internal" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
   && echo "xdebug.idekey=PHPSTORM" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
   && echo "xdebug.max_nesting_level=1000" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+  && echo "xdebug.remote_autostart=1" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
   && chmod 666 /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
   && cp /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini \
   && sed -ri 's/^(memory_limit = )[0-9]+(M|G)$/memory_limit = 2G/' /usr/local/etc/php/php.ini \
