@@ -49,3 +49,18 @@ php bin/magento setup:config:set --session-save=redis --session-save-redis-host=
 php bin/magento setup:config:set --cache-backend=redis --cache-backend-redis-server=redis --cache-backend-redis-db=0
 php bin/magento setup:config:set --page-cache=redis --page-cache-redis-server=redis --page-cache-redis-db=1
 ```
+
+## xdebugの設定
+Dockerfileの以下の記述はxdebug用です。
+`Xdebug v3`の設定になっています。
+自分の環境に合うように適宜修正してください。
+```
+zend_extension = {インストールしたXdebug本体のパス}
+xdebug.mode = debug
+xdebug.client_port = 9003
+xdebug.discover_client_host = 0
+xdebug.client_host = host.docker.internal
+xdebug.idekey = Listen for Xdebug
+xdebug.max_nesting_level = 1000
+xdebug.start_with_request = yes
+```
