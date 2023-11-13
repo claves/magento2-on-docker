@@ -2,7 +2,7 @@ version: "3"
 services:
   web:
     volumes:
-      - magento-sync:/var/www/html:nocopy
+      - sunrock-sync:/var/www/html:nocopy
 volumes:
-  magento-sync:
+  sunrock-sync:
     external: true

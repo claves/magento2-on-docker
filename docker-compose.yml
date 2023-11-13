@@ -4,11 +4,11 @@ services:
     build: ./
     image: magento2-web
     ports:
-      - "32770:80"
+      - "8888:80"
     links:
       - db
     volumes:
-      - magento-sync:/var/www/html:nocopy
+      - sunrock-sync:/var/www/html:nocopy
     depends_on:
       - db
     networks:
@@ -18,9 +18,9 @@ services:
     image: mysql:8.0
     platform: linux/amd64
     ports:
-      - "32769:3306"
+      - "8889:3306"
     environment:
-      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
       MYSQL_DATABASE: magento
     volumes:
       - db-data:/var/lib/mysql
@@ -50,17 +50,17 @@ services:
       - magento-network
 
   elasticsearch:
-        image: elasticsearch:7.9.0
-        ports:
-            - "9200:9200"
-            - "9300:9300"
-        environment:
-            discovery.type: single-node
-        networks:
-            - magento-network
+    image: elasticsearch:7.9.0
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      discovery.type: single-node
+    networks:
+      - magento-network
 
 volumes:
-  magento-sync:
+  sunrock-sync:
     external: true
   db-data:
     driver: local
