@@ -28,14 +28,14 @@ services:
       - magento-network
 
   redis:
-    image: redis
+    image: redis:7.0
     ports:
       - 6379
     networks:
       - magento-network
 
   redis-session:
-    image: redis
+    image: redis:7.0
     ports:
       - 6379
     networks:
@@ -50,7 +50,7 @@ services:
       - magento-network
 
   elasticsearch:
-        image: elasticsearch:7.9.0
+        image: elasticsearch:8.7.1
         ports:
             - "9200:9200"
             - "9300:9300"
