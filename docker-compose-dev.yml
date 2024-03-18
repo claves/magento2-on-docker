@@ -2,7 +2,8 @@ version: "3"
 services:
   web:
     volumes:
-      - magento-sync:/var/www/html:nocopy
+      - magento-sync:${DESTINATION_PATH}:nocopy
 volumes:
   magento-sync:
     external: true
+    name: "${COMPOSE_PROJECT_NAME}-unison-sync"

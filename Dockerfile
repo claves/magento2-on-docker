@@ -54,3 +54,5 @@ RUN apt-get update \
   && usermod -aG magento www-data
 ENV WEBROOT_PATH /var/www/html
 RUN passwd magento -d
+RUN echo elasticsearch/ca/ca.crt >> /etc/ca-certificates.conf
+ENTRYPOINT [ "bash", "-c", "update-ca-certificates && tail -f /dev/null" ]

@@ -101,7 +101,6 @@ services:
     networks:
       - magento-network
 
-
   es02:
     depends_on:
       - es01
@@ -174,18 +173,21 @@ services:
     networks:
       - magento-network
 
-
   web:
     build: ./
-    image: magento2-web24
+    image: "${COMPOSE_PROJECT_NAME}-web"
     ports:
       - "32770:80"
     links:
       - db
     volumes:
-      - magento-sync:/var/www/html:nocopy
+      - magento-sync:${DESTINATION_PATH}:nocopy
+      - certs:/usr/share/ca-certificates/elasticsearch
     depends_on:
-      - db
+      setup:
+        condition: service_healthy
+      db:
+        condition: service_started
     networks:
       - magento-network
 
@@ -227,6 +229,7 @@ services:
 volumes:
   magento-sync:
     external: true
+    name: "${COMPOSE_PROJECT_NAME}-unison-sync"
   db-data:
     driver: local
   certs:
@@ -240,3 +243,4 @@ volumes:
 networks:
   magento-network:
     driver: bridge
+    name: "${COMPOSE_PROJECT_NAME}-network"
