@@ -55,4 +55,7 @@ RUN apt-get update \
 ENV WEBROOT_PATH /var/www/html
 RUN passwd magento -d
 RUN echo elasticsearch/ca/ca.crt >> /etc/ca-certificates.conf
-ENTRYPOINT [ "bash", "-c", "update-ca-certificates && tail -f /dev/null" ]
+
+COPY ./entrypoint.sh /usr/local/bin
+RUN ["chmod", "+x", "/usr/local/bin/entrypoint.sh"]
+ENTRYPOINT [ "sh", "/usr/local/bin/entrypoint.sh" ]
