@@ -37,7 +37,7 @@ RUN apt-get update \
   && pecl install xdebug && docker-php-ext-enable xdebug \
   && pecl install imagick && docker-php-ext-enable imagick \
   && echo "xdebug.mode=debug" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
-  && echo "xdebug.client_port=9000" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+  && echo "xdebug.client_port=9003" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
   && echo "xdebug.discover_client_host=false" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
   && echo "xdebug.client_host=host.docker.internal" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
   && echo "xdebug.idekey=PHPSTORM" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
@@ -55,6 +55,15 @@ RUN apt-get update \
 ENV WEBROOT_PATH /var/www/html
 RUN passwd magento -d
 RUN echo elasticsearch/ca/ca.crt >> /etc/ca-certificates.conf
+
+RUN apt-get install -y locales
+RUN echo "ja_JP UTF-8" > /etc/locale.gen
+RUN locale-gen
+ENV LANG ja_JP.UTF-8
+ENV LANGUAGE ja_JP:en
+ENV LC_ALL ja_JP.UTF-8
+ENV LESS -iRMXS
+ENV LESSCHARSET utf-8
 
 COPY ./entrypoint.sh /usr/local/bin
 RUN ["chmod", "+x", "/usr/local/bin/entrypoint.sh"]

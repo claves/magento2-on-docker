@@ -177,7 +177,8 @@ services:
     build: ./
     image: "${COMPOSE_PROJECT_NAME}-web"
     ports:
-      - "32770:80"
+      - "${WEB_PORT}:80"
+      - "${XDEBUG_PORT}:9000"
     links:
       - db
     volumes:
@@ -195,7 +196,7 @@ services:
     image: mysql:8.0
     platform: linux/amd64
     ports:
-      - "32769:3306"
+      - "${DB_PORT}:3306"
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
       MYSQL_DATABASE: magento
