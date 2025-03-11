@@ -1,8 +1,9 @@
-version: "3"
-
 services:
   setup:
     image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
+    environment:
+      ES_JAVA_OPTS: -XX:UseSVE=0
+      CLI_JAVA_OPTS: -XX:UseSVE=0
     volumes:
       - certs:/usr/share/elasticsearch/config/certs
     user: "0"
@@ -67,11 +68,14 @@ services:
     ports:
       - ${ES_PORT}:9200
     environment:
+      - ES_JAVA_OPTS=-XX:UseSVE=0
+      - CLI_JAVA_OPTS=-XX:UseSVE=0
       - node.name=es01
       - cluster.name=${CLUSTER_NAME}
       - cluster.initial_master_nodes=es01,es02
       - discovery.seed_hosts=es02
       - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+      - indices.id_field_data.enabled=true
       - bootstrap.memory_lock=true
       - xpack.security.enabled=true
       - xpack.security.http.ssl.enabled=true
@@ -109,10 +113,13 @@ services:
       - certs:/usr/share/elasticsearch/config/certs
       - esdata02:/usr/share/elasticsearch/data
     environment:
+      - ES_JAVA_OPTS=-XX:UseSVE=0
+      - CLI_JAVA_OPTS=-XX:UseSVE=0
       - node.name=es02
       - cluster.name=${CLUSTER_NAME}
       - cluster.initial_master_nodes=es01,es02
       - discovery.seed_hosts=es01
+      - indices.id_field_data.enabled=true
       - bootstrap.memory_lock=true
       - xpack.security.enabled=true
       - xpack.security.http.ssl.enabled=true
@@ -182,7 +189,7 @@ services:
     links:
       - db
     volumes:
-      - magento-sync:${DESTINATION_PATH}:nocopy
+      - magento-sync:${DESTINATION_PATH}
       - certs:/usr/share/ca-certificates/elasticsearch
     depends_on:
       setup:
@@ -194,7 +201,6 @@ services:
 
   db:
     image: mysql:8.0
-    platform: linux/amd64
     ports:
       - "${DB_PORT}:3306"
     environment:
@@ -220,7 +226,7 @@ services:
       - magento-network
 
   mailhog:
-    image: mailhog/mailhog
+    image: jcalonso/mailhog:latest
     ports:
       - 1025:1025
       - 8025:8025
@@ -229,7 +235,6 @@ services:
 
 volumes:
   magento-sync:
-    external: true
     name: "${COMPOSE_PROJECT_NAME}-unison-sync"
   db-data:
     driver: local
@@ -245,3 +250,33 @@ networks:
   magento-network:
     driver: bridge
     name: "${COMPOSE_PROJECT_NAME}-network"
+
+x-mutagen:
+  sync:
+    defaults:
+      ignore:
+        vcs: true
+        paths:
+          - ".DS_Store"
+          - "magento2/var/cache"
+          - "magento2/var/sessions"
+          - "magento2/var/page_cache"
+          - "magento2/var/generation"
+          - "magento2/var/composer_home"
+          - "magento2/var/view_preprocessed"
+          - "magento2/var/session"
+          - "magento2/var/tmp"
+          - "node_modules"
+          - "magento2/generated/*"
+          - "magento2/pub/static/*"
+          - "magento2/pub/media/*"
+      configurationBeta:
+        permissions:
+          defaultFileMode: 0660
+          defaultDirectoryMode: 0770
+          defaultOwner: "id:1234"
+          defaultGroup: "id:1234"
+    mutagen-volume:
+      mode: "two-way-resolved"
+      alpha: "${APP_PATH}"
+      beta: "volume://magento-sync"

@@ -1,13 +1,14 @@
 # 意識低めのMagento2 on Docker v2.4
 できるだけ手軽にMagento2の開発環境を構築する実験
+参考: [Magento2.4 - 開発環境構築手順書](https://claves.notepm.jp/page/34d8cac0c1)
 
 ## 動作環境
 
-- [Docker](https://docs.docker.com/docker-for-mac/install/), [Docker-compose](https://docs.docker.com/compose/install/#install-compose) and [Docker-sync](https://docker-sync.readthedocs.io/en/latest/)
-- Magento ./src に展開するか `docker-sync.yml` を編集
+- [Docker](https://docs.docker.com/docker-for-mac/install/), [Docker-compose](https://docs.docker.com/compose/install/#install-compose) and [Mutagen Compose](https://github.com/mutagen-io/mutagen-compose)
+- Magento `.env` を編集して `APP_PATH` と一致させる
 
 ```
-    src: '/Magento/source/path' # Magentoソースディレクトリに変更
+APP_PATH=./src # Magentoソースディレクトリに変更
 ```
 
 - ポート番号は必要な場合は適宜修正 ホスト:コンテナの形式
@@ -18,8 +19,7 @@
 
 
 ## 使い方
-- Docker-syncを起動 `docker-sync start`
-- Docker-composeを起動 `docker-compose up -d`
+- Mutagen-Composeを起動 `mutagen-compose up -d`
 
 | 項目 | 内容 |
 |:--|:--|
@@ -30,8 +30,9 @@
 
 - コンテナに入る
 ```
-# docker-compose exec -u ユーザー コンテナ名 bash
-docker-compose exec -u magento web bash
+# mutagen-compose exec -u ユーザー コンテナ名 bash
+mutagen-compose exec -u magento web /bin/bash
+mutagen-compose exec -u root web /bin/bash
 ```
 
 ### Magento インストール
@@ -39,7 +40,27 @@ docker-compose exec -u magento web bash
 - ホスト名、ポート番号、管理者ログイン情報は適宜修正
 
 ```
-php bin/magento setup:install --base-url=http://magento2.test:32770/ --db-host=db --db-name=magento --db-user=root --admin-firstname=Magento --admin-lastname=User --admin-email=user@example.com --admin-user=admin --admin-password=admin123 --language=ja_JP --currency=JPY --timezone=Asia/Tokyo --use-rewrites=1 --backend-frontname=admin --elasticsearch-host=elasticsearch --elasticsearch-port=9200
+php bin/magento setup:install \
+--base-url=http://magento2.test:32770/ \
+--db-host=db \
+--db-name=magento \
+--db-user=root \
+--admin-firstname=Magento \
+--admin-lastname=User \
+--admin-email=example@claves.co.jp \
+--admin-user=admin \
+--admin-password=Passw0rd! \
+--language=ja_JP \
+--currency=JPY \
+--timezone=Asia/Tokyo \
+--use-rewrites=1 \
+--backend-frontname=momoadmin \
+--search-engine=elasticsearch8 \
+--elasticsearch-enable-auth=1 \
+--elasticsearch-username=elastic \
+--elasticsearch-host=https://es01 \
+--elasticsearch-port=9200 \
+--elasticsearch-password=PleaseChangeMe 
 ```
 
 ### セッションとキャッシュにredisを使用するよう設定

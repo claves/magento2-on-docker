@@ -46,13 +46,18 @@ RUN apt-get update \
   && chmod 666 /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
   && cp /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini \
   && sed -ri 's/^(memory_limit = )[0-9]+(M|G)$/memory_limit = 2G/' /usr/local/etc/php/php.ini \
-  && useradd -m -d /home/magento -s /bin/bash magento && adduser magento sudo \
+  && groupadd -g 1234 magento \
+  && useradd -m -u 1234 -g magento -d /home/magento -s /bin/bash magento && adduser magento sudo \
   && echo "magento ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers \
   && mkdir -p /etc/sudoers.d && touch /etc/sudoers.d/privacy \
   && echo "Defaults        lecture = never" >> /etc/sudoers.d/privacy \
   && usermod -aG www-data magento \
   && usermod -aG magento www-data
-ENV WEBROOT_PATH /var/www/html
+ENV APACHE_DOCUMENT_ROOT /var/www/html/magento2/pub
+RUN echo $APACHE_DOCUMENT_ROOT
+RUN sed -ri -e "s!/var/www/html!${APACHE_DOCUMENT_ROOT}!g" /etc/apache2/sites-available/*.conf
+RUN sed -ri -e "s!/var/www/!${APACHE_DOCUMENT_ROOT}!g" /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
+WORKDIR ${DESTINATION_PATH}
 RUN passwd magento -d
 RUN echo elasticsearch/ca/ca.crt >> /etc/ca-certificates.conf
 
